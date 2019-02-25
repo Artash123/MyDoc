@@ -12,11 +12,12 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/docs',
+      path: '/',
       name: 'Docs',
       component: Docs,
-      children: [{
-        path: '',
+      children: [
+        {
+        path: 'docs/:page',
         name: 'ShowDocs',
         component: ShowDocs
       },

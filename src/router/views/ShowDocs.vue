@@ -4,15 +4,26 @@
       <div class="col-md-3 new-button-box">
           <button type="button" class="btn btn-success new-doc-button"><span class="new-doc"><router-link :to="{name:'CreateDoc'}">New</router-link></span></button>
       </div>
-      <div v-for="(item, index) in docs" :key='index' class="col-md-3">
+      <div v-for="(doc, index) in docs" :key='index' class="col-md-3">
         <div class="document">
-          <h5>{{ item.title }}</h5>
-          <span class="doc-desc">{{ item.content.substring(0, 600) }}</span>
+          <h5>{{ doc.title }}</h5>
+          <span class="doc-desc">{{ doc.content }}</span>
           <div class="edit-layer">
-            <button  @click="editDoc(item)" type="button" class="btn btn-primary"><font-awesome-icon icon="edit" /></button>
-            <button  @click="deleteDoc(item)" type="button" class="btn btn-danger">X</button>
+            <button  @click="editDoc(doc)" type="button" class="btn btn-primary"><font-awesome-icon icon="edit" /></button>
+            <button  @click="deleteDoc(doc)" type="button" class="btn btn-danger">X</button>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+      <div class="">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li @click="changePage(previousPage)" class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li @click="changePage(index+1)" v-for="(page, index) in pages" :key='index' class="page-item"><a class="page-link" href="#">{{index+1}}</a></li>
+            <li @click="changePage(nextPage)" class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
@@ -22,22 +33,50 @@
 import Router from 'vue-router'
 export default {
   name: 'ShowDocs',
+  props: {
+    page: 1,
+    lastPage:{
+      default: () => {
+        return {
+          lastPage: false
+         }
+        }
+    }
+  },
   data () {
     return {
-
+      previousPage: '',
+      nextPage: '',
     }
+  },
+  mounted(){
+    this.$store.dispatch('fetchDocs',this.$route.params.page);
+    console.log(this.$route.params.page);
   },
   methods: {
     editDoc(doc) {
       this.$router.push({ name: 'EditDoc',params: {id: doc.id} })
     },
     deleteDoc(doc){
-      this.$store.commit('removeDocument',doc.id)
+      this.$store.dispatch('deleteDoc',doc);
+    },
+    changePage(pageNum){
+      // console.log(this.$route.params.page);
+      // if(pageNum!=1){
+      //   this.previousPage = pageNum-1;
+      // }
+      // if(pageNum!=this.$store.state.docs.pageCount){
+      //   this.nextPage = pageNum+1;
+      // }
+      this.$router.push({ name: 'EditDoc'})
     }
   },
   computed:{
     docs(){
-      return this.$store.state.documents;
+      return this.$store.state.docs.documents;
+    },
+    pages(){
+      return this.$store.state.docs.pageCount;
     }
   }
 }

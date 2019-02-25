@@ -21,13 +21,15 @@ export default {
         doc: doc,
         index: this.$route.params.id
       };
-      this.$store.commit('editDocument',payload);
-      this.$router.push({ name: 'ShowDocs'});
+      this.$store.dispatch('editDoc',doc).then(
+        this.$router.push({ name: 'ShowDocs' })
+      );
+
     }
   },
   computed: {
     doc() {
-      const doc = this.$store.state.documents
+      const doc = this.$store.state.docs.documents
         .find(doc => doc.id == this.$route.params.id)
       return JSON.parse(JSON.stringify(doc));
     },

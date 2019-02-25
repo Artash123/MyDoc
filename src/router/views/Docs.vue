@@ -6,23 +6,9 @@
 import Router from 'vue-router'
 export default {
   name: 'Docs',
-  // data () {
-  //   return {
-  //     documents: this.$store.state.documents
-  //   }
-  // },
-  // methods: {
-  //   editDoc() {
-  //     var docIndex = event.target.getAttribute('data-target');
-  //     console.log(docIndex);
-  //     this.$router.push({ path: '0/edit' })
-  //   }
-  // },
-  // computed:{
-  //   showDocs(){
-  //     return this.documents;
-  //   }
-  // }
+  mounted(){
+
+  }
 }
 </script>
 

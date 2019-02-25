@@ -15,8 +15,10 @@ export default {
   },
   methods: {
     save(doc){
-      this.$store.commit('addDocument',doc)
-      this.$router.push({ name: 'ShowDocs'});
+      // this.$store.commit('addDocument',doc)
+      this.$store.dispatch('addDocument',doc).then(
+        this.$router.push({ path: 'docs/'+this.$store.state.docs.pageCount})
+      );
     }
   },
   components: {
